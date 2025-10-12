@@ -28,7 +28,7 @@ class Config:
     # Image Compression for Replicate API
     MAX_IMAGE_DIMENSION: int = int(os.getenv("MAX_IMAGE_DIMENSION", "2048"))
     # JPEG quality (85-95 recommended, higher = better quality but larger payload)
-    IMAGE_QUALITY: int = int(os.getenv("IMAGE_QUALITY", "90"))
+    IMAGE_QUALITY: int = int(os.getenv("IMAGE_QUALITY", "60"))
     
     # Storage
     DATA_DIR: str = os.getenv("DATA_DIR", "data")

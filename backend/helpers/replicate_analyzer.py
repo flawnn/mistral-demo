@@ -1,12 +1,13 @@
-import os
 import base64
+import os
 from io import BytesIO
-from typing import List, Dict, Any
-from PIL import Image, ImageDraw, ImageFont
+from typing import Any, Dict, List
+
 import replicate
+from config import config
+from PIL import Image, ImageDraw, ImageFont
 
 from .analyzer_interface import ImageAnalyzerInterface
-from config import config
 
 
 class ReplicateAnalyzer(ImageAnalyzerInterface):

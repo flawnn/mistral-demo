@@ -1,10 +1,11 @@
-import os
-from PIL import Image
-from io import BytesIO
 import base64
-from helpers.satellite_downloader import SatelliteDownloader
-from helpers.analyzer_factory import create_analyzer
+import os
+from io import BytesIO
+
 from config import config
+from helpers.analyzer_factory import create_analyzer
+from helpers.satellite_downloader import SatelliteDownloader
+from PIL import Image
 
 
 class SatelliteBackend:

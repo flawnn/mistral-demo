@@ -754,6 +754,7 @@ class SatelliteDownloader:
         previous_grid = None
         downloaded_images = []
         skipped_versions = 0
+        identical_versions = 0
         for version in range(current_version, -1, -1):
             try:
                 print(f"Version {version}")
@@ -766,8 +767,11 @@ class SatelliteDownloader:
                 if version != current_version:
                     print("Downloading corner tiles and comparing with previously downloaded version...")
                     if grid.corners_identical_to(previous_grid):
-                        print("Imagery seems identical, going to next version instead of downloading this one...")
-                        continue
+                        identical_versions += 1
+                        
+                        if identical_versions >= 3:
+                            print("Imagery seems identical, going to next version instead of downloading this one...")
+                            continue
                     print("They're different! So:")
 
                 previous_grid = grid
