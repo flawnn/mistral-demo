@@ -25,13 +25,14 @@ class SatelliteBackend:
         else:
             self.image_ids = [f.name for f in os.scandir(data_dir) if f.is_dir()]
 
-        # Load images into memory
+        # Load images into memory (these are already PIL images from disk)
         for image_id in self.image_ids:
             image_dir = f"{data_dir}/{image_id}"
             if os.path.exists(image_dir):
-                images = [Image.open(f"{image_dir}/{file.name}") for file in os.scandir(image_dir) if file.name.endswith(('.jpg', '.jpeg', '.png'))]
+                image_files = [file for file in os.scandir(image_dir) if file.name.endswith(('.jpg', '.jpeg', '.png'))]
+                images = [Image.open(f"{image_dir}/{file.name}") for file in image_files]
                 self.images_db[image_id] = images
-                self.image_names[image_id] = [file.name for file in os.scandir(image_dir) if file.name.endswith(('.jpg', '.jpeg', '.png'))]
+                self.image_names[image_id] = [file.name for file in image_files]
 
     def download_satellite_images(self, latitude: float, longitude: float, zoom: int):
         """
@@ -39,13 +40,16 @@ class SatelliteBackend:
         """
         image_id, images = self.satellite_downloader.download(latitude, longitude, zoom)
 
-        self.images_db[str(image_id)] = images
+        # Extract PIL images from MapTileImage wrappers
+        pil_images = [img.image if hasattr(img, 'image') else img for img in images]
+        self.images_db[str(image_id)] = pil_images
         
         # Get image names from downloaded images
         image_dir = f"{config.DATA_DIR}/{image_id}"
         if os.path.exists(image_dir):
             self.image_names[str(image_id)] = [f.name for f in os.scandir(image_dir) if f.name.endswith(('.jpg', '.jpeg', '.png'))]
 
+        # Use original images for tobytes (MapTileImage has custom tobytes method)
         images_bytes = [image.tobytes() for image in images]
 
         return {
@@ -56,11 +60,12 @@ class SatelliteBackend:
     async def analyze_satellite_images(self, image_id: str, analysis_type: str):
         """
         Analyze satellite images using configured analyzer (async).
+        Images in database are PIL Image.Image objects (extracted from MapTileImage wrappers).
         """
         if image_id not in self.images_db:
             return {"error": "Image not found"}
 
-        images = self.images_db[image_id]
+        images = self.images_db[image_id]  # PIL Image.Image objects
         image_names = self.image_names.get(image_id, [f"image_{i}" for i in range(len(images))])
 
         os.makedirs(f"{config.PROCESSED_DATA_DIR}/{image_id}", exist_ok=True)

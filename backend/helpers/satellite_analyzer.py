@@ -102,6 +102,7 @@ class SatelliteAnalyzer(ImageAnalyzerInterface):
         Returns:
             dict: Filtered results dictionary.
         """
+        
         boxes = results["boxes"]
         scores = results["scores"]
         labels = results["labels"]

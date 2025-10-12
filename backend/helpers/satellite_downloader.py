@@ -685,8 +685,8 @@ class SatelliteDownloader:
         if direction.is_eastward() or direction.is_westward():
             geowidth, geoheight = geoheight, geowidth
 
-        image_width = 4096
-        image_height = 4096
+        image_width = 2048
+        image_height = 2048
 
         output_format = "jpegs" #jpegs,gifs,both
 

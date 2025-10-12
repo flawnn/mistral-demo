@@ -44,3 +44,9 @@ yarn-error.log*
 
 # idea files
 .idea
+
+__pycache__
+
+backend/data/
+
+processed_data/
