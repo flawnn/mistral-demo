@@ -1,29 +1,18 @@
-# Create T3 App
+# Mapalyst
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A simple geospatial analysis tool with dedicated ML Backend running [Grounding Dino](https://huggingface.co/IDEA-Research/grounding-dino-base) to analyze objects from satellite imagery that we fetch from a hidden Google Maps API.
 
-## What's next? How do I make an app with this?
+> [!WARNING] 
+> The undocumented Google Maps API endpoint this project uses has changed in the meantime and doesn't allow anymore to get older satellite images sadly. Hence, the images shown in the tool, even if more than one, will be (most probably) the same ones. So please forgive us on that one, a proper satellite imagery source [is just really expensive](https://app.skyfi.com/tasking?s=DAY&r=VERY+HIGH&aoi=POLYGON+%28%28-97.71707461991977+30.28934572636869%2C+-97.71708649530422+30.244242480134297%2C+-97.76903510469577+30.244242480134297%2C+-97.76904698008022+30.28934572636869%2C+-97.71707461991977+30.28934572636869%29%29)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Good Examples to use
+-> Most other examples probably will have problems with the coordinates as the LLM will not have accurate data on that; Mistral's Conversation/Agent API sadly [errored out while developing this](https://github.com/mistralai/client-ts/issues/141), so adding a tool wasn't possible.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+* JFK Airport - "Can you analyze the current amount and trend of airplanes at JFK Airport?"
+* Chrysler Car Factory Detroit - "Please analyze the current trend and amount of cars at the GM Chrysler Factory"
+* Amsterdam Airport Schiphol - "Analyze the amount of airplanes at Amsterdam Schiphol Airport"
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Setup
 
-## Learn More
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.

@@ -1,7 +1,8 @@
 import fastapi
+from config import config
+from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from main import SatelliteBackend
-from config import config
 
 app = fastapi.FastAPI()
 satellite_backend = SatelliteBackend()
@@ -29,6 +30,35 @@ async def startup_event():
         raise
 
 
+def validate_coordinates(latitude: float, longitude: float) -> None:
+    """
+    Validate latitude and longitude coordinates.
+    
+    Raises:
+        HTTPException: If coordinates are invalid
+    """
+    # Check for 0,0 (common error/default value)
+    if latitude == 0 and longitude == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid coordinates: (0, 0). Please provide valid location coordinates."
+        )
+    
+    # Validate latitude range
+    if not -90 <= latitude <= 90:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid latitude: {latitude}. Latitude must be between -90 and 90 degrees."
+        )
+    
+    # Validate longitude range
+    if not -180 <= longitude <= 180:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid longitude: {longitude}. Longitude must be between -180 and 180 degrees."
+        )
+
+
 @app.get("/")
 def home():
     return {
@@ -40,14 +70,22 @@ def home():
 
 @app.get("/downloadSatelliteImages")
 def download_satellite_images(
-    latitude: float = fastapi.Query(..., description="Latitude coordinate"),
-    longitude: float = fastapi.Query(..., description="Longitude coordinate"),
-    zoom: int = fastapi.Query(default=10, description="Zoom level")
+    latitude: float = fastapi.Query(..., description="Latitude coordinate (-90 to 90)"),
+    longitude: float = fastapi.Query(..., description="Longitude coordinate (-180 to 180)"),
+    zoom: int = fastapi.Query(default=10, description="Zoom level", ge=1, le=20)
 ):
     """
     Download satellite images for given coordinates.
+    
+    Validates coordinates before processing:
+    - Rejects (0, 0) as it's typically an error
+    - Ensures latitude is between -90 and 90
+    - Ensures longitude is between -180 and 180
     """
-    print(f"Downloading satellite images for {latitude}, {longitude} with zoom {zoom}")
+    # Validate coordinates
+    validate_coordinates(latitude, longitude)
+    
+    print(f"✅ Downloading satellite images for {latitude}, {longitude} with zoom {zoom}")
 
     return satellite_backend.download_satellite_images(latitude, longitude, zoom)
 

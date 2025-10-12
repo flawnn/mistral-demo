@@ -94,7 +94,12 @@ export const AnalysisResponseWidget: React.FC<AnalysisResponseWidgetProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="mt-4 space-y-4 rounded-lg bg-muted p-4"
+            className={cn(
+              "mt-4 space-y-4 rounded-lg p-4",
+              findings.confidence === 0
+                ? "border border-yellow-200 bg-yellow-50 dark:border-yellow-900 dark:bg-yellow-950/20"
+                : "bg-muted",
+            )}
           >
             <h3 className="font-semibold">Analysis Summary</h3>
             <p className="text-sm">{findings.summary}</p>
@@ -117,7 +122,13 @@ export const AnalysisResponseWidget: React.FC<AnalysisResponseWidgetProps> = ({
               </span>
               <span>
                 Confidence:{" "}
-                <span className="font-medium">
+                <span
+                  className={cn(
+                    "font-medium",
+                    findings.confidence === 0 &&
+                      "text-yellow-600 dark:text-yellow-500",
+                  )}
+                >
                   {Math.round(findings.confidence * 100)}%
                 </span>
               </span>

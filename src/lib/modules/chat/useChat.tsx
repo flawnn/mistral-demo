@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { api } from "~/trpc/react";
 import { useMap } from "../map/context/MapContext";
@@ -49,25 +49,29 @@ export function useChat() {
   const { zoomTo } = useMap();
   const analyzeQueryMutation = api.satellite.analyzeQuery.useMutation();
   const analyzeImagesMutation = api.satellite.analyzeImages.useMutation();
-  const synthesizeFindingsMutation = api.satellite.synthesizeFindings.useMutation();
+  const synthesizeFindingsMutation =
+    api.satellite.synthesizeFindings.useMutation();
 
   // Enhanced scroll to bottom function
-  const scrollToBottom = useCallback((delay: number = SCROLL_DELAY, immediate = false) => {
-    // Clear any existing scroll timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    // Set new scroll timeout
-    scrollTimeoutRef.current = setTimeout(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({
-          behavior: immediate ? "auto" : "smooth",
-          block: "end",
-        });
+  const scrollToBottom = useCallback(
+    (delay: number = SCROLL_DELAY, immediate = false) => {
+      // Clear any existing scroll timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
-    }, delay);
-  }, []);
+
+      // Set new scroll timeout
+      scrollTimeoutRef.current = setTimeout(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({
+            behavior: immediate ? "auto" : "smooth",
+            block: "end",
+          });
+        }
+      }, delay);
+    },
+    [],
+  );
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -117,26 +121,29 @@ export function useChat() {
     setAnalysisState((prev) => ({ ...prev, ...updates }));
   };
 
-  const updateLastAssistantMessage = useCallback((updates: Partial<ChatMessage>) => {
-    setMessages((prev) => {
-      const newMessages = [...prev];
-      const lastAssistantIndex = newMessages
-        .map((msg, index) => ({ ...msg, index }))
-        .filter((msg) => msg.role === "assistant")
-        .pop();
+  const updateLastAssistantMessage = useCallback(
+    (updates: Partial<ChatMessage>) => {
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        const lastAssistantIndex = newMessages
+          .map((msg, index) => ({ ...msg, index }))
+          .filter((msg) => msg.role === "assistant")
+          .pop();
 
-      if (lastAssistantIndex) {
-        newMessages[lastAssistantIndex.index] = {
-          ...newMessages[lastAssistantIndex.index],
-          ...updates,
-        } as ChatMessage;
-      }
-      return newMessages;
-    });
+        if (lastAssistantIndex) {
+          newMessages[lastAssistantIndex.index] = {
+            ...newMessages[lastAssistantIndex.index],
+            ...updates,
+          } as ChatMessage;
+        }
+        return newMessages;
+      });
 
-    // Trigger scroll after message update
-    scrollToBottom(SCROLL_DELAY * 2);
-  }, [scrollToBottom]);
+      // Trigger scroll after message update
+      scrollToBottom(SCROLL_DELAY * 2);
+    },
+    [scrollToBottom],
+  );
 
   const sendMessage = async (content: string) => {
     try {
@@ -170,7 +177,10 @@ export function useChat() {
 
       // Update map view
       zoomTo(
-        [queryAnalysis.coordinates.longitude, queryAnalysis.coordinates.latitude],
+        [
+          queryAnalysis.coordinates.longitude,
+          queryAnalysis.coordinates.latitude,
+        ],
         14,
       );
 
@@ -212,19 +222,46 @@ export function useChat() {
       await waitMinimumDuration();
 
       // Step 5: Synthesize Findings
-      const findings = await synthesizeFindingsMutation.mutateAsync({
-        timeSeriesData: analysisResult.timeSeriesData,
-        coordinates: queryAnalysis.coordinates,
-        type: queryAnalysis.type,
-      });
+      let findings;
+      let partialAnalysis = false;
+
+      try {
+        findings = await synthesizeFindingsMutation.mutateAsync({
+          timeSeriesData: analysisResult.timeSeriesData,
+          coordinates: queryAnalysis.coordinates,
+          type: queryAnalysis.type,
+        });
+      } catch (findingsError) {
+        // [AI] Handle validation errors gracefully - show partial results
+        console.warn(
+          "Findings synthesis failed, showing partial analysis:",
+          findingsError,
+        );
+        partialAnalysis = true;
+
+        // [AI] Create fallback findings
+        findings = {
+          summary:
+            "Analysis completed successfully, but we couldn't generate a detailed summary due to data validation issues. The time-series data and processed images are available below.",
+          keyFindings: [
+            "Image analysis completed",
+            "Time-series data extracted",
+            "Detailed synthesis unavailable - please review the visualizations",
+          ],
+          trend: "stable" as const,
+          confidence: 0,
+        };
+      }
 
       // Update final message with complete analysis and findings
       updateLastAssistantMessage({
-        content: findings.summary,
+        content: partialAnalysis ? "⚠️ " + findings.summary : findings.summary,
         widget: (
           <AnalysisResponseWidget
             currentStep="PROCESS_IMAGES"
-            content={findings.summary}
+            content={
+              partialAnalysis ? "⚠️ " + findings.summary : findings.summary
+            }
             initialImages={queryAnalysis.images}
             analysisResults={{
               processedImages: analysisResult.processedImages,
