@@ -26,7 +26,7 @@ export class SatelliteApiError extends Error {
 
 // API Configuration
 const API_CONFIG = {
-  baseUrl: "https://67a4c3059ca6fc342b8602dbdc7a8a34.serveo.net",
+  baseUrl: "http://localhost:8000",
   timeout: 3000000, // 30 seconds
 } as const;
 
