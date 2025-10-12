@@ -1,9 +1,9 @@
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import type React from "react";
+import type { FindingsSynthesis } from "~/lib/ai-sdk/client";
 import { cn } from "~/lib/utils";
 import { AgentStepsWidget, type AnalysisStep } from "./AgentStepsWidget";
 import { RichResponseWidget } from "./RichResponseWidget";
-import { motion, AnimatePresence } from "framer-motion";
-import type { FindingsSynthesis } from "~/lib/vercel-ai/client";
 
 interface AnalysisResponseWidgetProps {
   currentStep: AnalysisStep;
@@ -31,9 +31,7 @@ export const AnalysisResponseWidget: React.FC<AnalysisResponseWidgetProps> = ({
   return (
     <div className={cn("flex flex-col space-y-4", className)}>
       {/* Content Message */}
-      {content && (
-        <div className="text-sm text-foreground">{content}</div>
-      )}
+      {content && <div className="text-sm text-foreground">{content}</div>}
 
       {/* Steps Progress */}
       <AgentStepsWidget currentStep={currentStep} />
@@ -100,22 +98,28 @@ export const AnalysisResponseWidget: React.FC<AnalysisResponseWidgetProps> = ({
           >
             <h3 className="font-semibold">Analysis Summary</h3>
             <p className="text-sm">{findings.summary}</p>
-            
+
             <div className="space-y-2">
               <h4 className="text-sm font-medium">Key Findings:</h4>
               <ul className="list-inside list-disc space-y-1">
                 {findings.keyFindings.map((finding, index) => (
-                  <li key={index} className="text-sm">{finding}</li>
+                  <li key={finding} className="text-sm">
+                    {finding}
+                  </li>
                 ))}
               </ul>
             </div>
 
             <div className="flex items-center justify-between text-sm">
               <span>
-                Trend: <span className="font-medium capitalize">{findings.trend}</span>
+                Trend:{" "}
+                <span className="font-medium capitalize">{findings.trend}</span>
               </span>
               <span>
-                Confidence: <span className="font-medium">{Math.round(findings.confidence * 100)}%</span>
+                Confidence:{" "}
+                <span className="font-medium">
+                  {Math.round(findings.confidence * 100)}%
+                </span>
               </span>
             </div>
           </motion.div>
@@ -123,4 +127,4 @@ export const AnalysisResponseWidget: React.FC<AnalysisResponseWidgetProps> = ({
       </AnimatePresence>
     </div>
   );
-}; 
+};

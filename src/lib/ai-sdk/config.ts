@@ -1,5 +1,4 @@
 export const AI_CONFIG = {
-  model: "gpt-4o",
+  model: "mistral-small-latest",
   temperature: 0.7,
-  re: 0.2,
 } as const;

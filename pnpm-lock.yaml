@@ -11,6 +11,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.0.5
         version: 1.0.5(zod@3.23.8)
+      '@mistralai/mistralai':
+        specifier: ^1.10.0
+        version: 1.10.0
       '@opentelemetry/api':
         specifier: ^1.9.0
         version: 1.9.0
@@ -387,6 +390,9 @@ packages:
   '@mapbox/whoots-js@3.1.0':
     resolution: {integrity: sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==}
     engines: {node: '>=6.0.0'}
+
+  '@mistralai/mistralai@1.10.0':
+    resolution: {integrity: sha512-tdIgWs4Le8vpvPiUEWne6tK0qbVc+jMenujnvTqOjogrJUsCSQhus0tHTU1avDDh5//Rq2dFgP9mWRAdIEoBqg==}
 
   '@next/env@15.0.3':
     resolution: {integrity: sha512-t9Xy32pjNOvVn2AS+Utt6VmyrshbpfUMhIjFO60gI58deSo/KgLOp31XZ4O+kY/Is8WAGYwA5gR7kOb1eORDBA==}
@@ -2480,6 +2486,11 @@ packages:
     peerDependencies:
       zod: ^3.23.3
 
+  zod-to-json-schema@3.24.6:
+    resolution: {integrity: sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==}
+    peerDependencies:
+      zod: ^3.24.1
+
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
@@ -2686,6 +2697,11 @@ snapshots:
       '@mapbox/point-geometry': 0.1.0
 
   '@mapbox/whoots-js@3.1.0': {}
+
+  '@mistralai/mistralai@1.10.0':
+    dependencies:
+      zod: 3.23.8
+      zod-to-json-schema: 3.24.6(zod@3.23.8)
 
   '@next/env@15.0.3': {}
 
@@ -4941,6 +4957,10 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod-to-json-schema@3.23.5(zod@3.23.8):
+    dependencies:
+      zod: 3.23.8
+
+  zod-to-json-schema@3.24.6(zod@3.23.8):
     dependencies:
       zod: 3.23.8
 
