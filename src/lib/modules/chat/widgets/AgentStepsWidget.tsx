@@ -1,12 +1,13 @@
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import type React from "react";
 import { cn } from "~/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 
 export const ANALYSIS_STEPS = {
   ANALYZE_QUERY: "Analyze Query",
   GET_SATELLITE_IMAGES: "Get Satellite Images",
   ANALYZE_OBJECT_TYPE: "Analyze Object",
   PROCESS_IMAGES: "Process Images",
+  COMPLETE: "Complete",
 } as const;
 
 export type AnalysisStep = keyof typeof ANALYSIS_STEPS;
@@ -25,7 +26,11 @@ const StepItem: React.FC<{
     <motion.div
       className={cn(
         "relative flex items-center gap-3 py-2 transition-colors",
-        isActive ? "text-primary" : isPassed ? "text-muted-foreground" : "text-muted-foreground/60"
+        isActive
+          ? "text-primary"
+          : isPassed
+            ? "text-muted-foreground"
+            : "text-muted-foreground/60",
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -35,7 +40,11 @@ const StepItem: React.FC<{
       <div
         className={cn(
           "h-2 w-2 rounded-full transition-colors",
-          isActive ? "bg-primary" : isPassed ? "bg-muted-foreground" : "bg-muted-foreground/60"
+          isActive
+            ? "bg-primary"
+            : isPassed
+              ? "bg-muted-foreground"
+              : "bg-muted-foreground/60",
         )}
       />
 
@@ -66,6 +75,7 @@ export const AgentStepsWidget: React.FC<AgentStepsWidgetProps> = ({
   // Get ordered array of steps
   const steps = Object.keys(ANALYSIS_STEPS) as AnalysisStep[];
   const currentStepIndex = steps.indexOf(currentStep);
+  const isComplete = currentStep === "COMPLETE";
 
   return (
     <div className={cn("flex flex-col space-y-1", className)}>
@@ -74,8 +84,8 @@ export const AgentStepsWidget: React.FC<AgentStepsWidgetProps> = ({
           <StepItem
             key={step}
             step={step}
-            isActive={step === currentStep}
-            isPassed={index < currentStepIndex}
+            isActive={!isComplete && step === currentStep}
+            isPassed={isComplete || index < currentStepIndex}
           />
         ))}
       </AnimatePresence>

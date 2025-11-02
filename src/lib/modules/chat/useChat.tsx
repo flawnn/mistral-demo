@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import type { FindingsSynthesis } from "~/lib/ai-sdk/client";
 import { api } from "~/trpc/react";
 import { useMap } from "../map/context/MapContext";
-import { type AnalysisStep } from "./widgets/AgentStepsWidget";
+import type { AnalysisStep } from "./widgets/AgentStepsWidget";
 import { AnalysisResponseWidget } from "./widgets/AnalysisResponseWidget";
 
 // Initial map state from MapInterface.tsx
@@ -222,7 +223,7 @@ export function useChat() {
       await waitMinimumDuration();
 
       // Step 5: Synthesize Findings
-      let findings;
+      let findings: FindingsSynthesis;
       let partialAnalysis = false;
 
       try {
@@ -231,7 +232,7 @@ export function useChat() {
           coordinates: queryAnalysis.coordinates,
           type: queryAnalysis.type,
         });
-      } catch (findingsError) {
+      } catch (findingsError: unknown) {
         // Handle validation errors gracefully - show partial results
         console.warn(
           "Findings synthesis failed, showing partial analysis:",
@@ -258,7 +259,7 @@ export function useChat() {
         content: partialAnalysis ? "⚠️ " + findings.summary : findings.summary,
         widget: (
           <AnalysisResponseWidget
-            currentStep="PROCESS_IMAGES"
+            currentStep="COMPLETE"
             content={
               partialAnalysis ? "⚠️ " + findings.summary : findings.summary
             }
@@ -272,7 +273,7 @@ export function useChat() {
           />
         ),
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error in sendMessage:", error);
       addMessage({
         role: "assistant",
