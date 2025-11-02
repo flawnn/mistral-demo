@@ -59,6 +59,9 @@ export const RichResponseWidget: React.FC<RichResponseWidgetProps> = ({
           maxWidth: "100%",
         }}
       >
+        {/* Message Content */}
+        {content && <div className="w-full break-words text-sm">{content}</div>}
+
         {isLoading && currentStep ? (
           <AgentStepsWidget currentStep={currentStep} />
         ) : (
@@ -124,9 +127,6 @@ export const RichResponseWidget: React.FC<RichResponseWidgetProps> = ({
                 />
               </div>
             )}
-
-            {/* Message Content */}
-            {content && <div className="w-full break-words text-sm">{content}</div>}
           </>
         )}
       </div>
