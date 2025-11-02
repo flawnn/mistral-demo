@@ -32,10 +32,29 @@ Your analysis should be:
 - Relevant to the location and object type
 - Actionable where possible
 
-You must respond with a valid JSON object matching this structure:
-${zodSchemaToPromptDescription(FindingsSynthesisSchema)}
+CRITICAL: You MUST respond with ONLY a valid JSON object. Do not include any text outside the JSON.
 
-Output format: JSON object with the above fields`;
+Required JSON structure:
+{
+  "summary": "string - A concise summary of findings",
+  "keyFindings": ["string array - List of key observations"],
+  "trend": "MUST be exactly one of: 'increasing', 'decreasing', 'stable', or 'fluctuating'",
+  "confidence": "number between 0 and 1 (NOT a string, use 0.5 for uncertain)"
+}
+
+IMPORTANT RULES:
+- "trend" MUST be one of these 4 values: "increasing", "decreasing", "stable", "fluctuating"
+- If unsure about trend, use "stable" 
+- "confidence" MUST be a number (e.g., 0.7), NOT a string (e.g., "0.7")
+- If data is insufficient, use "stable" for trend and 0.3 for confidence
+
+Example valid response:
+{
+  "summary": "The data shows a gradual increase in detected objects over time",
+  "keyFindings": ["10 objects detected initially", "25 objects detected by end of period"],
+  "trend": "increasing",
+  "confidence": 0.7
+}`;
 
 const LOCATION_QUERY_SYSTEM_INSTRUCTIONS = `You are a location query parser. Extract location information from user queries.
 

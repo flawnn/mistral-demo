@@ -72,7 +72,7 @@ def home():
 def download_satellite_images(
     latitude: float = fastapi.Query(..., description="Latitude coordinate (-90 to 90)"),
     longitude: float = fastapi.Query(..., description="Longitude coordinate (-180 to 180)"),
-    zoom: int = fastapi.Query(default=10, description="Zoom level", ge=1, le=20)
+    zoom: int = fastapi.Query(default=10, description="Zoom level")
 ):
     """
     Download satellite images for given coordinates.

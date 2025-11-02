@@ -37,7 +37,7 @@ async function handleApiResponse<T>(
 ): Promise<T> {
   if (!response.ok) {
     // Parse error response body, defaulting to null if parsing fails
-    const errorBody: unknown = await response.json().catch(() => null);
+    const errorBody: string = await response.text().catch(() => "");
     throw new SatelliteApiError(
       `API request failed with status ${response.status}`,
       response.status,

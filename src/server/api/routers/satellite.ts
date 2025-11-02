@@ -8,7 +8,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 const FindingsSynthesisResponseSchema = z.object({
   summary: z.string(),
   keyFindings: z.array(z.string()),
-  trend: z.enum(["increasing", "decreasing", "stable", "fluctuating"]),
+  trend: z.enum(["increasing", "decreasing", "stable", "fluctuating"]).default("stable"),
   confidence: z.number().min(0).max(1),
 });
 
