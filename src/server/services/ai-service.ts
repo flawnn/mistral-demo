@@ -6,6 +6,10 @@ import {
   zodSchemaToPromptDescription,
 } from "~/lib/ai-sdk/client";
 import {
+  QUERY_EXTRACTION_AI_CONFIG,
+  SYNTHESIS_AI_CONFIG,
+} from "~/lib/ai-sdk/config";
+import {
   KEY_PLACES,
   type LocationQuery,
   LocationQuerySchema,
@@ -91,6 +95,7 @@ export class AIService {
         {
           systemPrompt: LOCATION_QUERY_SYSTEM_INSTRUCTIONS,
           userPrompt: `User query: ${query}`,
+          config: QUERY_EXTRACTION_AI_CONFIG,
         },
         LocationQuerySchema,
       );
@@ -130,6 +135,7 @@ Analyze this data and provide structured insights.`;
         {
           systemPrompt: SYNTHESIS_SYSTEM_INSTRUCTIONS,
           userPrompt,
+          config: SYNTHESIS_AI_CONFIG,
         },
         FindingsSynthesisSchema,
       );

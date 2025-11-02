@@ -232,14 +232,14 @@ export function useChat() {
           type: queryAnalysis.type,
         });
       } catch (findingsError) {
-        // [AI] Handle validation errors gracefully - show partial results
+        // Handle validation errors gracefully - show partial results
         console.warn(
           "Findings synthesis failed, showing partial analysis:",
           findingsError,
         );
         partialAnalysis = true;
 
-        // [AI] Create fallback findings
+        // Create fallback findings
         findings = {
           summary:
             "Analysis completed successfully, but we couldn't generate a detailed summary due to data validation issues. The time-series data and processed images are available below.",

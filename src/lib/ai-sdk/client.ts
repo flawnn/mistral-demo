@@ -1,7 +1,7 @@
 import { Mistral } from "@mistralai/mistralai";
 import { z } from "zod";
 import { env } from "~/env";
-import { AI_CONFIG } from "./config";
+import { QUERY_EXTRACTION_AI_CONFIG } from "./config";
 
 const mistral = new Mistral({
   apiKey: env.MISTRAL_API_KEY,
@@ -17,10 +17,16 @@ export const FindingsSynthesisSchema = z.object({
 
 export type FindingsSynthesis = z.infer<typeof FindingsSynthesisSchema>;
 
+interface AIConfig {
+  model: string;
+  temperature: number;
+}
+
 interface MistralChatOptions {
   systemPrompt: string;
   userPrompt: string;
   temperature?: number;
+  config?: AIConfig;
 }
 
 /**
@@ -30,9 +36,10 @@ export const generateStructuredOutput = async <T>(
   options: MistralChatOptions,
   schema: z.ZodSchema<T>,
 ): Promise<T> => {
+  const config = options.config ?? QUERY_EXTRACTION_AI_CONFIG;
   const response = await mistral.chat.complete({
-    model: AI_CONFIG.model,
-    temperature: options.temperature ?? AI_CONFIG.temperature,
+    model: config.model,
+    temperature: options.temperature ?? config.temperature,
     messages: [
       {
         role: "system",
