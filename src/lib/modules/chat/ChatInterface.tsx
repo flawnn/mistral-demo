@@ -3,7 +3,8 @@
 
 import Avatar from "boring-avatars";
 import { CornerDownLeft } from "lucide-react";
-import React, { useRef, useState } from "react";
+import type React from "react";
+import { useRef, useState } from "react";
 import { useToast } from "~/hooks/use-toast";
 import { Button } from "~/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/ui/components/card";
@@ -51,7 +52,7 @@ export const ChatInterface: React.FC = () => {
         <div className="flex-1 overflow-hidden px-4">
           <ChatMessageList
             ref={messageListRef}
-            className="h-full overflow-y-auto"
+            className="custom-scrollbar h-full overflow-y-auto"
           >
             {messages.map((message, index) => (
               <ChatBubble
@@ -96,7 +97,7 @@ export const ChatInterface: React.FC = () => {
           </ChatMessageList>
         </div>
 
-        <div className="bg-background focus-within:ring-ring relative m-1 flex rounded-lg border focus-within:ring-1">
+        <div className="relative m-1 flex rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
           <ChatInput
             value={inputValue}
             onChange={(e) => !isLoading && setInputValue(e.target.value)}
@@ -109,7 +110,7 @@ export const ChatInterface: React.FC = () => {
             placeholder={
               isLoading ? "Please wait..." : "Type your message here..."
             }
-            className="bg-background min-h-12 flex-1 resize-none rounded-l-lg border-0 p-3 shadow-none focus-visible:ring-0 disabled:opacity-50"
+            className="min-h-12 flex-1 resize-none rounded-l-lg border-0 bg-background p-3 shadow-none focus-visible:ring-0 disabled:opacity-50"
             disabled={isLoading}
             aria-disabled={isLoading}
           />
