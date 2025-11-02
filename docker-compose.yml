@@ -20,9 +20,10 @@ services:
       - ./backend/processed_data:/app/processed_data
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     restart: unless-stopped
 
   # Next.js frontend + BFF
@@ -38,6 +39,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    ports:
-      - "3000:3000"
+    # ports:
+      # - "3000:3000" - expose if needed
     restart: unless-stopped

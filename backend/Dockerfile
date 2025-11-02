@@ -21,11 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN addgroup --system app \
-    && adduser --system --ingroup app app \
-    && chown -R app:app /app
-
-USER app
+RUN mkdir -p /app/data /app/processed_data
 
 EXPOSE 8000
 
