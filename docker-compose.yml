@@ -6,8 +6,15 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
+    environment:
+      - ANALYZER_TYPE=${ANALYZER_TYPE:-replicate}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - BOX_THRESHOLD=${BOX_THRESHOLD:-0.2}
+      - TEXT_THRESHOLD=${TEXT_THRESHOLD:-0.2}
+      - MAX_IMAGE_DIMENSION=${MAX_IMAGE_DIMENSION:-2048}
+      - IMAGE_QUALITY=${IMAGE_QUALITY:-60}
+      - DATA_DIR=${DATA_DIR:-data}
+      - PROCESSED_DATA_DIR=${PROCESSED_DATA_DIR:-processed_data}
     ports:
       - "8000:8000"
     volumes:
@@ -25,8 +32,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    env_file:
-      - ./.env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - BACKEND_URL=${BACKEND_URL:-http://backend:8000}
+      - SKIP_ENV_VALIDATION=${SKIP_ENV_VALIDATION:-0}
     depends_on:
       backend:
         condition: service_healthy
