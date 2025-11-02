@@ -94,7 +94,8 @@ export const RichResponseWidget: React.FC<RichResponseWidgetProps> = ({
                           }}
                           className="relative"
                         >
-                          <div
+                          <button
+                            type="button"
                             className="relative h-full w-full cursor-pointer overflow-hidden rounded-lg transition-transform duration-200 hover:scale-[1.03]"
                             onClick={() => setSelectedImage(imageUrl)}
                           >
@@ -106,7 +107,7 @@ export const RichResponseWidget: React.FC<RichResponseWidgetProps> = ({
                               sizes={`${CAROUSEL_CONFIG.imageWidth}px`}
                               priority={index < 2}
                             />
-                          </div>
+                          </button>
                         </div>
                       </CarouselItem>
                     ))}

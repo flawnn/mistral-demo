@@ -91,7 +91,10 @@ export const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
         enabled: true,
         callbacks: {
           title: (context) => {
-            const point = data[context[0].dataIndex];
+            const firstContext = context[0];
+            if (!firstContext) return "";
+            
+            const point = data[firstContext.dataIndex];
             if (point) {
               return new Date(point.timestamp).toLocaleDateString("en-US", {
                 year: "numeric",

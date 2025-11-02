@@ -19,6 +19,8 @@ FROM deps AS builder
 
 COPY . .
 
+ENV SKIP_ENV_VALIDATION=1
+
 RUN pnpm build
 
 FROM node:20-alpine AS runner

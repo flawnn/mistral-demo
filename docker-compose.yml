@@ -15,8 +15,6 @@ services:
       - IMAGE_QUALITY=${IMAGE_QUALITY:-60}
       - DATA_DIR=${DATA_DIR:-data}
       - PROCESSED_DATA_DIR=${PROCESSED_DATA_DIR:-processed_data}
-    ports:
-      - "8000:8000"
     volumes:
       - ./backend/data:/app/data
       - ./backend/processed_data:/app/processed_data
