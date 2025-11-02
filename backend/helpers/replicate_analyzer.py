@@ -240,12 +240,15 @@ class ReplicateAnalyzer(ImageAnalyzerInterface):
         draw = ImageDraw.Draw(image)
 
         try:
-            font = ImageFont.truetype("Arial.ttf", 24)
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 24)
         except:
             try:
-                font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 24)
+                font = ImageFont.truetype("Arial.ttf", 24)
             except:
-                font = ImageFont.load_default()
+                try:
+                    font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 24)
+                except:
+                    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 20)
 
         for i, box in enumerate(boxes):
             x1, y1, x2, y2 = box

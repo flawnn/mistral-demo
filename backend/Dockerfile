@@ -10,7 +10,10 @@ RUN apt-get update \
         libgl1 \
         libglib2.0-0 \
         libjpeg-dev \
+        libfreetype6-dev \
         zlib1g-dev \
+        fontconfig \
+        fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
