@@ -11,6 +11,7 @@ import {
   type DownloadSatelliteImagesResponse,
   DownloadSatelliteImagesResponseSchema,
 } from "./py-api/models/downloadSatelliteImages";
+import { env } from "~/env";
 
 // Custom error class for API errors
 export class SatelliteApiError extends Error {
@@ -26,7 +27,7 @@ export class SatelliteApiError extends Error {
 
 // API Configuration
 const API_CONFIG = {
-  baseUrl: "http://localhost:8000",
+  baseUrl: env.BACKEND_URL,
   timeout: 3000000, // 30 seconds
 } as const;
 
