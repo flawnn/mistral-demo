@@ -23,7 +23,7 @@ A simple geospatial analysis tool with dedicated ML Backend running [Grounding D
 
 ### Quick Start (Docker)
 
-The easiest way to run the application is via Docker. Environment variables can be passed directly through your deployment platform (Coolify, Portainer, etc.) or via a `.env` file for local development.
+The easiest way to run the application is via Docker. Environment variables can be passed directly through your deployment platform or via a `.env` file for local development.
 
 1. **Configure environment variables:**
 
@@ -46,8 +46,6 @@ The easiest way to run the application is via Docker. Environment variables can 
    BACKEND_URL=http://backend:8000
    SKIP_ENV_VALIDATION=0
    ```
-
-   > **For deployment platforms (Coolify, etc.)**: Simply configure these environment variables through your platform's UI. Docker Compose will pick them up automatically.
 
 2. **Build and start:**
 
@@ -124,6 +122,7 @@ We use **Mistral Small** for both query extraction and findings synthesis becaus
 </details>
 
 ### Hosted Instance
+
 A hosted demo instance is available for testing without requiring API keys:
 
 **Demo URL:** http://mapalyst-demo.flawn.eu
