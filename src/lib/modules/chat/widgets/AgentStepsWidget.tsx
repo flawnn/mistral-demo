@@ -52,15 +52,20 @@ const StepItem: React.FC<{
       <span className="text-sm font-medium">{ANALYSIS_STEPS[step]}</span>
 
       {/* Active step shimmer effect */}
+
       {isActive && (
         <motion.div
-          className="absolute inset-0 rounded-md bg-gradient-to-r from-transparent via-primary/10 to-transparent"
-          initial={{ x: "-100%" }}
-          animate={{ x: "100%" }}
+          className="absolute inset-0 rounded-md blur-sm"
+          style={{
+            background:
+              "linear-gradient(to right, transparent, hsl(var(--primary) / 0.15), transparent)",
+          }}
+          initial={{ x: "-100%", opacity: 0.6 }}
+          animate={{ x: "100%", opacity: 1 }}
           transition={{
             repeat: Infinity,
-            duration: 1.5,
-            ease: "linear",
+            duration: 1.6,
+            ease: "easeInOut",
           }}
         />
       )}
